@@ -1,0 +1,28 @@
+function prepareUrl(queryParam) {
+    var addressesArray = [];
+     // Prepare Addresses array
+    if (typeof (queryParam.address) === 'string') {
+        addressesArray.push(queryParam.address);
+    } else {
+        addressesArray = addressesArray.concat(queryParam.address);
+    }
+    return addressesArray;
+}
+
+function appendProtocol (urls) {
+    for (var i in urls) {
+        urls[i] = 'http://' + urls[i]
+    }
+}
+
+function buildHtml (data) {
+    var ret = '<html> <title>List Items</title> <ul>';
+    for (var i in data) {
+        ret += '<li> <b>' + data[i].url + '</b> --> ' + data[i].title + '</li>';
+    }
+    return ret + '</ul></html>';
+}
+
+exports.prepareUrl = prepareUrl;
+exports.appendProtocol = appendProtocol;
+exports.buildHtml = buildHtml;
