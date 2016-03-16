@@ -7,8 +7,7 @@ var app = express();
 app.get('/I/want/title', function (req, res) {
 
     // Get addresses array out of query params
-    var addresses = utils.prepareUrl(req.query),
-        contentList = [];
+    var addresses = utils.prepareUrl(req.query);
 
     // Append http:// with url string
     utils.appendProtocol(addresses);
@@ -16,11 +15,8 @@ app.get('/I/want/title', function (req, res) {
     // iterate through address list and make request for each
     // parse html and get titles for each
 
-    request({
-        uri: addresses[1]
-    }, function (error, response, body) {
-        contentList.push(utils.getTitle(response, body));
-        res.send(utils.buildHtml(contentList));
+    utils.requestAll(addresses, function (titleList) {
+        res.send(utils.buildHtml(titleList));
     });
 
 });

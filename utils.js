@@ -1,8 +1,9 @@
-var cheerio = require('cheerio');
+var cheerio = require('cheerio'),
+    request = require('request');
 
 function prepareUrl(queryParam) {
     var addressesArray = [];
-     // Prepare Addresses array
+    // Prepare Addresses array
     if (typeof (queryParam.address) === 'string') {
         addressesArray.push(queryParam.address);
     } else {
@@ -11,13 +12,13 @@ function prepareUrl(queryParam) {
     return addressesArray;
 }
 
-function appendProtocol (urls) {
+function appendProtocol(urls) {
     for (var i in urls) {
         urls[i] = 'http://' + urls[i]
     }
 }
 
-function buildHtml (data) {
+function buildHtml(data) {
     var ret = '<html> <title>List Items</title> <ul>';
     for (var i in data) {
         ret += '<li> <b>' + data[i].url + '</b> --> ' + data[i].title + '</li>';
@@ -25,7 +26,7 @@ function buildHtml (data) {
     return ret + '</ul></html>';
 }
 
-function getTitle (response, html) {
+function getTitle(response, html) {
     var $ = cheerio.load(html),
         res = {};
 
@@ -40,7 +41,26 @@ function getTitle (response, html) {
     return res;
 }
 
+function requestAll(urlList, cb) {
+
+    var titleList = [],
+        counter = urlList.length;
+
+    for (var i = 0; i < urlList.length; i++) {
+        request({
+            uri: urlList[i]
+        }, function (error, response, body) {
+            titleList.push(getTitle(response, body));
+            counter -= 1;
+            if (counter === 0) {
+                cb(titleList);
+            }
+        });
+    }
+}
+
 exports.prepareUrl = prepareUrl;
 exports.appendProtocol = appendProtocol;
 exports.buildHtml = buildHtml;
 exports.getTitle = getTitle;
+exports.requestAll = requestAll;
