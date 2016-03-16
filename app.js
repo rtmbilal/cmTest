@@ -1,9 +1,9 @@
 var express = require('express'),
-    request = require('request'),
     utils = require('./utils');
 
 var app = express();
 
+// Handle request
 app.get('/I/want/title', function (req, res) {
 
     // Get addresses array out of query params
@@ -13,8 +13,9 @@ app.get('/I/want/title', function (req, res) {
     utils.appendProtocol(addresses);
 
     // iterate through address list and make request for each
-    // parse html and get titles for each
-
+    // parse html and get titles for each url
+    // build html from generated array of objects
+    // once completed, send response to callee with populated list
     utils.requestAll(addresses, function (titleList) {
         res.send(utils.buildHtml(titleList));
     });
