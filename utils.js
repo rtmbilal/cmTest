@@ -1,3 +1,5 @@
+var cheerio = require('cheerio');
+
 function prepareUrl(queryParam) {
     var addressesArray = [];
      // Prepare Addresses array
@@ -23,6 +25,22 @@ function buildHtml (data) {
     return ret + '</ul></html>';
 }
 
+function getTitle (response, html) {
+    var $ = cheerio.load(html),
+        res = {};
+
+    $('title').filter(function () {
+        var data = $(this);
+        res = {
+            'url': response.request.href,
+            'title': data.html()
+        }
+    });
+
+    return res;
+}
+
 exports.prepareUrl = prepareUrl;
 exports.appendProtocol = appendProtocol;
 exports.buildHtml = buildHtml;
+exports.getTitle = getTitle;

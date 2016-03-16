@@ -1,29 +1,25 @@
 var express = require('express'),
     request = require('request'),
-    cheerio = require('cheerio'),
     utils = require('./utils');
 
 var app = express();
 
 app.get('/I/want/title', function (req, res) {
+
+    // Get addresses array out of query params
     var addresses = utils.prepareUrl(req.query),
         contentList = [];
 
+    // Append http:// with url string
     utils.appendProtocol(addresses);
 
+    // iterate through address list and make request for each
+    // parse html and get titles for each
+
     request({
-        uri: addresses[1],
+        uri: addresses[1]
     }, function (error, response, body) {
-        var $ = cheerio.load(body);
-
-        $('title').filter(function () {
-            var data = $(this);
-            contentList.push({
-                'url': response.request.href,
-                'title': data.html()
-            });
-        });
-
+        contentList.push(utils.getTitle(response, body));
         res.send(utils.buildHtml(contentList));
     });
 
