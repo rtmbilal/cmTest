@@ -7,11 +7,6 @@ var mocha = require('gulp-mocha');
 var istanbul = require('gulp-istanbul');
 var plumber = require('gulp-plumber');
 
-gulp.task('static', function () {
-    return gulp.src('**/*.js')
-        .pipe(excludeGitignore());
-});
-
 gulp.task('pre-test', function () {
     return gulp.src('lib/**/*.js')
         .pipe(excludeGitignore())
@@ -40,4 +35,4 @@ gulp.task('watch', function () {
     gulp.watch(['lib/**/*.js', 'test/**'], ['test']);
 });
 
-gulp.task('default', ['static', 'test']);
+gulp.task('default', ['test']);
