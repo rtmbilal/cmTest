@@ -23,13 +23,14 @@
   "dependencies": {
     "cheerio": "^0.20.0",
     "express": "^4.13.3",
+    "q": "^1.4.1",
     "request": "^2.69.0",
     "supertest": "^1.2.0"
   },
   "repository": "usmantahirr/cmtest",
   "scripts": {
     "start": "node lib/index.js",
-    "debug": "node-debug lib/index.js",
+    "error": "node-debug lib/index.js",
     "test": "gulp"
   },
   "license": "Apache-2.0"
