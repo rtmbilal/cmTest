@@ -64,4 +64,9 @@ describe('Make API Call to http://localhost:3000/I/want/title', function () {
             done();
         });
     });
+
+    it('should return status 500 if wrong url is passed', function (done) {
+        this.timeout(5000);
+        request(server).get('/I/want/title?address=abc12').expect(500, done);
+    });
 });
