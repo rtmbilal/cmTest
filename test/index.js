@@ -69,4 +69,9 @@ describe('Make API Call to http://localhost:3000/I/want/title', function () {
         this.timeout(5000);
         request(server).get('/I/want/title?address=abc12').expect(500, done);
     });
+
+    it('should return status 404 if any other url is accessed', function (done) {
+        this.timeout(5000);
+        request(server).get('/I/want/title/a').expect(404, done);
+    });
 });
